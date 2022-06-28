@@ -75,6 +75,12 @@ const KekHullam = {
     darab: 10,
     texture: new THREE.TextureLoader().load( "textures/kekhullam.png" )
 }
+const SimaKek = {
+    name: "SimaKek",
+    price: 8500,
+    darab: 10,
+    color: 0x4e7a87
+}
 const SzurkeCsik = {
     price: 2400, //listello carneval
     darab: 1,
@@ -107,6 +113,18 @@ const csemperend = [
     { height: 20, tipus: SimaFeher }
 ]
 
+const csemperend2 = [
+    { height: 15, tipus: SimaKek },
+    { height: 20, tipus: SimaKek },
+    { height: 20, tipus: SimaKek },
+    { height: 20, tipus: SimaKek },
+    { height: 4.5, tipus: SzurkeCsik },
+    { height: 20, tipus: FeherHullam },
+    { height: 20, tipus: FeherHullam },
+    { height: 4.5, tipus: SzurkeCsik },
+    { height: 20, tipus: SimaFeher }
+]
+
 // one-sided rectangle, centered
 function csempeGeometry(w, h, uw, uh) {
     const g = new THREE.BufferGeometry()
@@ -132,7 +150,7 @@ function csempeGeometry(w, h, uw, uh) {
     return g;
 }
 
-function csempésFal(width, height, vspan, hstart = 0) {
+function csempésFal(width, height, vspan, hstart = 0, rend = csemperend) {
     //height = 74
     const group = new THREE.Group();
     let i = 0;
@@ -148,7 +166,7 @@ function csempésFal(width, height, vspan, hstart = 0) {
         }
     }
     for (y = 0; y < height; i++) {
-        const csempesor = csemperend[Math.min(i, csemperend.length - 1)];
+        const csempesor = rend[Math.min(i, rend.length - 1)];
         th = Math.min(csempesor.height, height - y);
         if (y + th > hstart) {
             let szelesseg = starterWidth;
@@ -179,12 +197,12 @@ scene.add( pl );
 
 scene.add(csempésFal(200, 207, 'right')); // tukros
 scene.add(csempésFal(198, 207, 'right').rotateY(Math.PI / 2).translateX(-198)); // radiatoros
-scene.add(csempésFal(76, 207, 'left').translateX(198 + 8)); // zuhany bal
-scene.add(csempésFal(93, 207, 'right').translateX(198 + 8 + 76).rotateY(-Math.PI / 2)) // zuhany hatso
+scene.add(csempésFal(76, 207, 'left', 0, csemperend2).translateX(198 + 8)); // zuhany bal
+scene.add(csempésFal(93, 207, 'right', 0, csemperend2).translateX(198 + 8 + 76).rotateY(-Math.PI / 2)) // zuhany hatso
 scene.add(csempésFal(85, 207, 'left', 57).translateX(198 + 8 + 76).rotateY(-Math.PI / 2).translateX(93 + 8)) // kadas hatso
 scene.add(csempésFal(149 + 33 - 2, 207, 'right', 57).rotateY(Math.PI).translateX(-280-2).translateZ(-186)) // kadas jobb
 
-scene.add(csempésFal(76, 80, 'center').translateZ(93).rotateY(Math.PI).translateX(-76-198-8)) // zuhany kad feloli also fala
+scene.add(csempésFal(76, 80, 'center', 0, csemperend2).translateZ(93).rotateY(Math.PI).translateX(-76-198-8)) // zuhany kad feloli also fala
 
 scene.add(csempésFal(63, 53, 'center').translateZ(93 + 8 + 12).rotateY(Math.PI).translateX(-63-3-97-33)) // kad zuhanyfelol
 scene.add(csempésFal(74, 53, 'center').rotateY(-Math.PI/2).translateX(93 + 8 + 12).translateZ(-3 - 97 - 33)) // kad ajto felol
